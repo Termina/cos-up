@@ -15,6 +15,12 @@ Format for `secrets.cirru`:
   :pass-md5 |TODO
 ```
 
+Dev request:
+
+```bash
+curl -X POST http://localhost:4000/token -d "{} (:user |me) (:pass |aaaa) (:file-key |demo)"
+```
+
 ### Workflow
 
 https://github.com/calcit-lang/calcit-workflow

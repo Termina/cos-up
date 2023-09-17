@@ -25,7 +25,7 @@
             defn handle-token (bucket app-id secret file-key cb)
               &let
                 cos-obj $ new COS
-                  js-object (:SecretId secret) (:SecretKey secret)
+                  js-object (:SecretId app-id) (:SecretKey secret)
                 w-js-log $ .!getObjectUrl cos-obj
                   js-object (:Bucket bucket) (:Region "\"ap-hongkong")
                     :Key $ str "\"cos-up/" (or file-key "\"demo0")
@@ -37,6 +37,7 @@
                         :body $ {}
                           :message $ str err
                       cb $ {} (:code 200)
+                        :headers $ {} ("\"Access-Control-Allow-Origin" "\"*")
                         :body $ {}
                           :url $ .-Url data
         |main! $ %{} :CodeEntry (:doc |)
@@ -70,9 +71,13 @@
                           {} (:code 403) (:message "\"Not user")
                             :headers $ {}
                             :body $ {} (:message "\"not open for all users...")
-                {} (:code 404) (:message "\"Non hit")
-                  :headers $ {}
-                  :body $ {} (:message "\"only token is impelemented")
+                if
+                  = :options $ :method req-data
+                  {} (:code 200) (:message "\"OK")
+                    :headers $ {} ("\"Access-Control-Allow-Origin" "\"*")
+                  {} (:code 404) (:message "\"Non hit")
+                    :headers $ {}
+                    :body $ {} (:message "\"only token is impelemented")
         |reload! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn reload! () (skir/reset-req-handler! on-request!) (println "\"Reloaded.")

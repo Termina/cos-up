@@ -101,7 +101,7 @@
                               |b $ %{} :Expr (:at 1694965419151) (:by |u0)
                                 :data $ {}
                                   |T $ %{} :Leaf (:at 1694965419151) (:by |u0) (:text |:SecretId)
-                                  |b $ %{} :Leaf (:at 1694965419151) (:by |u0) (:text |secret)
+                                  |b $ %{} :Leaf (:at 1694973692235) (:by |u0) (:text |app-id)
                               |h $ %{} :Expr (:at 1694965419151) (:by |u0)
                                 :data $ {}
                                   |T $ %{} :Leaf (:at 1694965419151) (:by |u0) (:text |:SecretKey)
@@ -143,7 +143,7 @@
                               |q $ %{} :Expr (:at 1694964176301) (:by |u0)
                                 :data $ {}
                                   |T $ %{} :Leaf (:at 1694964177572) (:by |u0) (:text |:Sign)
-                                  |b $ %{} :Leaf (:at 1694964178352) (:by |u0) (:text |true)
+                                  |b $ %{} :Leaf (:at 1694973219376) (:by |u0) (:text |true)
                           |h $ %{} :Expr (:at 1694964179797) (:by |u0)
                             :data $ {}
                               |T $ %{} :Leaf (:at 1694964180148) (:by |u0) (:text |fn)
@@ -197,6 +197,16 @@
                                             :data $ {}
                                               |T $ %{} :Leaf (:at 1694964205531) (:by |u0) (:text |:code)
                                               |b $ %{} :Leaf (:at 1694964209294) (:by |u0) (:text |200)
+                                          |e $ %{} :Expr (:at 1694972076546) (:by |u0)
+                                            :data $ {}
+                                              |D $ %{} :Leaf (:at 1694972078211) (:by |u0) (:text |:headers)
+                                              |T $ %{} :Expr (:at 1694972056828) (:by |u0)
+                                                :data $ {}
+                                                  |T $ %{} :Leaf (:at 1694972056828) (:by |u0) (:text |{})
+                                                  |b $ %{} :Expr (:at 1694972075657) (:by |u0)
+                                                    :data $ {}
+                                                      |T $ %{} :Leaf (:at 1694972056828) (:by |u0) (:text "|\"Access-Control-Allow-Origin")
+                                                      |b $ %{} :Leaf (:at 1694972056828) (:by |u0) (:text "|\"*")
                                           |h $ %{} :Expr (:at 1694964210133) (:by |u0)
                                             :data $ {}
                                               |T $ %{} :Leaf (:at 1694964214934) (:by |u0) (:text |:body)
@@ -409,33 +419,65 @@
                                                     :data $ {}
                                                       |T $ %{} :Leaf (:at 1694963060708) (:by |u0) (:text |:message)
                                                       |b $ %{} :Leaf (:at 1694963069312) (:by |u0) (:text "|\"not open for all users...")
-                  |T $ %{} :Expr (:at 1694961781144) (:by |u0)
+                  |T $ %{} :Expr (:at 1694971986856) (:by |u0)
                     :data $ {}
-                      |T $ %{} :Leaf (:at 1694961784635) (:by |u0) (:text |{})
-                      |b $ %{} :Expr (:at 1694961785982) (:by |u0)
+                      |D $ %{} :Leaf (:at 1694971987353) (:by |u0) (:text |if)
+                      |L $ %{} :Expr (:at 1694971988850) (:by |u0)
                         :data $ {}
-                          |T $ %{} :Leaf (:at 1694961786536) (:by |u0) (:text |:code)
-                          |b $ %{} :Leaf (:at 1694962696757) (:by |u0) (:text |404)
-                      |h $ %{} :Expr (:at 1694961788900) (:by |u0)
-                        :data $ {}
-                          |T $ %{} :Leaf (:at 1694961791544) (:by |u0) (:text |:message)
-                          |b $ %{} :Leaf (:at 1694962702571) (:by |u0) (:text "|\"Non hit")
-                      |l $ %{} :Expr (:at 1694961793252) (:by |u0)
-                        :data $ {}
-                          |T $ %{} :Leaf (:at 1694961794463) (:by |u0) (:text |:headers)
-                          |b $ %{} :Expr (:at 1694961794720) (:by |u0)
+                          |T $ %{} :Leaf (:at 1694971988991) (:by |u0) (:text |=)
+                          |b $ %{} :Leaf (:at 1694971990734) (:by |u0) (:text |:options)
+                          |h $ %{} :Expr (:at 1694971993209) (:by |u0)
                             :data $ {}
-                              |T $ %{} :Leaf (:at 1694961794988) (:by |u0) (:text |{})
-                      |o $ %{} :Expr (:at 1694961795807) (:by |u0)
+                              |T $ %{} :Leaf (:at 1694971993209) (:by |u0) (:text |:method)
+                              |b $ %{} :Leaf (:at 1694971993209) (:by |u0) (:text |req-data)
+                      |P $ %{} :Expr (:at 1694971994407) (:by |u0)
                         :data $ {}
-                          |T $ %{} :Leaf (:at 1694961796481) (:by |u0) (:text |:body)
-                          |b $ %{} :Expr (:at 1694961796748) (:by |u0)
+                          |T $ %{} :Leaf (:at 1694971994833) (:by |u0) (:text |{})
+                          |b $ %{} :Expr (:at 1694971995542) (:by |u0)
                             :data $ {}
-                              |T $ %{} :Leaf (:at 1694961797097) (:by |u0) (:text |{})
-                              |b $ %{} :Expr (:at 1694962000326) (:by |u0)
+                              |T $ %{} :Leaf (:at 1694971996492) (:by |u0) (:text |:code)
+                              |b $ %{} :Leaf (:at 1694972000861) (:by |u0) (:text |200)
+                          |h $ %{} :Expr (:at 1694972001896) (:by |u0)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1694972003323) (:by |u0) (:text |:message)
+                              |b $ %{} :Leaf (:at 1694972004128) (:by |u0) (:text "|\"OK")
+                          |l $ %{} :Expr (:at 1694972006038) (:by |u0)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1694972007672) (:by |u0) (:text |:headers)
+                              |b $ %{} :Expr (:at 1694972008020) (:by |u0)
                                 :data $ {}
-                                  |T $ %{} :Leaf (:at 1694962001801) (:by |u0) (:text |:message)
-                                  |b $ %{} :Leaf (:at 1694962712108) (:by |u0) (:text "|\"only token is impelemented")
+                                  |T $ %{} :Leaf (:at 1694972008294) (:by |u0) (:text |{})
+                                  |b $ %{} :Expr (:at 1694972008835) (:by |u0)
+                                    :data $ {}
+                                      |T $ %{} :Leaf (:at 1694972024712) (:by |u0) (:text "|\"Access-Control-Allow-Origin")
+                                      |b $ %{} :Leaf (:at 1694972026676) (:by |u0) (:text "|\"*")
+                      |T $ %{} :Expr (:at 1694961781144) (:by |u0)
+                        :data $ {}
+                          |T $ %{} :Leaf (:at 1694961784635) (:by |u0) (:text |{})
+                          |b $ %{} :Expr (:at 1694961785982) (:by |u0)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1694961786536) (:by |u0) (:text |:code)
+                              |b $ %{} :Leaf (:at 1694962696757) (:by |u0) (:text |404)
+                          |h $ %{} :Expr (:at 1694961788900) (:by |u0)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1694961791544) (:by |u0) (:text |:message)
+                              |b $ %{} :Leaf (:at 1694962702571) (:by |u0) (:text "|\"Non hit")
+                          |l $ %{} :Expr (:at 1694961793252) (:by |u0)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1694961794463) (:by |u0) (:text |:headers)
+                              |b $ %{} :Expr (:at 1694961794720) (:by |u0)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1694961794988) (:by |u0) (:text |{})
+                          |o $ %{} :Expr (:at 1694961795807) (:by |u0)
+                            :data $ {}
+                              |T $ %{} :Leaf (:at 1694961796481) (:by |u0) (:text |:body)
+                              |b $ %{} :Expr (:at 1694961796748) (:by |u0)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1694961797097) (:by |u0) (:text |{})
+                                  |b $ %{} :Expr (:at 1694962000326) (:by |u0)
+                                    :data $ {}
+                                      |T $ %{} :Leaf (:at 1694962001801) (:by |u0) (:text |:message)
+                                      |b $ %{} :Leaf (:at 1694962712108) (:by |u0) (:text "|\"only token is impelemented")
         |reload! $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1606310753106) (:by |u0)
             :data $ {}

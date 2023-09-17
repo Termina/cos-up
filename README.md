@@ -2,7 +2,7 @@
 COS upload
 ----
 
-> script.
+> dirty script providing a server.
 
 ### Workflow
 

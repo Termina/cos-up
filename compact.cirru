@@ -45,6 +45,7 @@
             defn main! ()
               println "\"COS get" $ .-getAuthorization COS
               skir/create-server! on-request! $ {}
+                :port $ js/parseInt (get-env "\"PORT" "\"4000")
         |on-request! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn on-request! (req-data res)
@@ -68,7 +69,7 @@
                             = (:user body) (:user secrets)
                             = (:pass body) (:pass-md5 secrets)
                           handle-token (:bucket secrets) (:app-id secrets) (:secret secrets) (:file-key body) cb
-                          {} (:code 403) (:message "\"Not user")
+                          cb $ {} (:code 403) (:message "\"Not user")
                             :headers $ {}
                             :body $ {} (:message "\"not open for all users...")
                 if

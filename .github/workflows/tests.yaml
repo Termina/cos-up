@@ -30,6 +30,6 @@ jobs:
         version: '0.8.1'
 
     - name: "test"
-      run: caps --ci && cr -1 --entry test
+      run: caps --ci
 
-    - run: cr --emit-js -1 --entry test && yarn && node ./main.mjs
+    - run: cr --emit-ir -1

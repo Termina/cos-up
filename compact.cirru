@@ -27,7 +27,7 @@
                 cos-obj $ new COS
                   js-object (:SecretId app-id) (:SecretKey secret)
                 w-js-log $ .!getObjectUrl cos-obj
-                  js-object (:Bucket bucket) (:Region "\"ap-hongkong")
+                  js-object (:Bucket bucket) (:Region "\"ap-shanghai")
                     :Key $ str "\"cos-up/" (or file-key "\"demo0")
                     :Method "\"PUT"
                     :Sign true

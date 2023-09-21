@@ -32,4 +32,21 @@ jobs:
     - name: "test"
       run: caps --ci
 
-    - run: cr --emit-ir -1
+    - run: cr --emit-js -1
+
+    - run: mkdir -p dist-server && cp -r {package.json,main.mjs,js-out,yarn.lock} dist-server/
+
+    - name: Upload server script
+      id: deploy-server
+      uses: Pendect/action-rsyncer@v2.0.0
+      env:
+        DEPLOY_KEY: ${{secrets.rsync_private_key}}
+      with:
+        flags: '-avzr --progress'
+        options: ''
+        ssh_options: ''
+        src: 'dist-server/*'
+        dest: 'rsync-user@tiye.me:/servers/cos-up/'
+
+    - name: Display status from deploy
+      run: echo "${{ steps.deploy-server.outputs.status }}"

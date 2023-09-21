@@ -27,7 +27,7 @@
                 cos-obj $ new COS
                   js-object (:SecretId app-id) (:SecretKey secret)
                 w-js-log $ .!getObjectUrl cos-obj
-                  js-object (:Bucket bucket) (:Region "\"ap-hongkong")
+                  js-object (:Bucket bucket) (:Region "\"ap-shanghai")
                     :Key $ str "\"cos-up/" (or file-key "\"demo0")
                     :Method "\"PUT"
                     :Sign true
@@ -45,6 +45,7 @@
             defn main! ()
               println "\"COS get" $ .-getAuthorization COS
               skir/create-server! on-request! $ {}
+                :port $ js/parseInt (get-env "\"PORT" "\"4000")
         |on-request! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn on-request! (req-data res)
@@ -68,7 +69,7 @@
                             = (:user body) (:user secrets)
                             = (:pass body) (:pass-md5 secrets)
                           handle-token (:bucket secrets) (:app-id secrets) (:secret secrets) (:file-key body) cb
-                          {} (:code 403) (:message "\"Not user")
+                          cb $ {} (:code 403) (:message "\"Not user")
                             :headers $ {}
                             :body $ {} (:message "\"not open for all users...")
                 if

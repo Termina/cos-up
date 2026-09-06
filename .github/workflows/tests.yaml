@@ -6,41 +6,63 @@ on:
       - main
   pull_request: {}
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-
-    - uses: actions/setup-node@v3
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
-        node-version: 20
-        cache: 'yarn'
+        persist-credentials: false
 
-    - uses: supplypike/setup-bin@v3
+    - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
       with:
-        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.8.1/cr'
-        name: 'cr'
-        version: '0.8.1'
+        node-version: 24
+        package-manager-cache: false
 
-    - uses: supplypike/setup-bin@v3
+    - name: Enable Corepack
+      run: |
+        corepack enable
+        corepack prepare yarn@4.12.0 --activate
+        yarn --version
+
+    - uses: calcit-lang/setup-calcit@704b3f5cd6f9ce3bd1e0c926dbdd1d181adb8180 # v1.4.0
       with:
-        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.8.1/caps'
-        name: 'caps'
-        version: '0.8.1'
+        tools: calcit,caps
 
-    - name: "test"
-      run: caps --ci
+    - name: Resolve immutable dependencies
+      run: |
+        set -euo pipefail
+        caps --strict --ci
+        yarn install --immutable
+        caps verify --toolchain
 
-    - run: cr --emit-js -1
+    - name: Validate canonical Calcit snapshot
+      run: |
+        set -euo pipefail
+        calcit calcit.cirru edit format
+        git diff --exit-code -- calcit.cirru
+        calcit calcit.cirru --check-only
+        calcit calcit.cirru analyze dynamic-methods --max 0
+        calcit calcit.cirru analyze deprecated --summary-only
+        calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
 
-    - run: mkdir -p dist-server && cp -r {package.json,main.mjs,js-out,yarn.lock} dist-server/
+    - name: Build server bundle
+      run: |
+        set -euo pipefail
+        calcit calcit.cirru js
+        node --check js-out/app.main.mjs
+        mkdir -p dist-server
+        cp -r package.json main.mjs js-out yarn.lock dist-server/
 
     - name: Upload server script
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       id: deploy-server
-      uses: Pendect/action-rsyncer@v2.0.0
+      uses: Pendect/action-rsyncer@b7f90f4f8ed893d4e3f852f7a73180631f63d4bd # v2.0.0
       env:
-        DEPLOY_KEY: ${{secrets.rsync_private_key}}
+        DEPLOY_KEY: ${{ secrets.rsync_private_key }}
       with:
         flags: '-avzr --progress'
         options: ''
@@ -48,5 +70,6 @@ jobs:
         src: 'dist-server/*'
         dest: 'rsync-user@tiye.me:/servers/cos-up/'
 
-    - name: Display status from deploy
+    - name: Display deployment status
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: echo "${{ steps.deploy-server.outputs.status }}"

@@ -5,7 +5,7 @@
   :entries $ {} $ :default
     {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!)
       :feature-policy $ {}
-      :modules $ [] |skir/ |lilac/
+      :modules $ [] |skir/
       :type-slots $ {}
   :files $ {}
     'app.http $ %{} 'FileEntry

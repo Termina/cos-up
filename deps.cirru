@@ -1,5 +1,5 @@
 
-{} (:calcit-version |0.14.17) (:version |0.0.7)
+{} (:calcit-version |0.18.1) (:version |0.0.8)
   :dependencies $ {}
-    |calcit-lang/skir |0.0.24
+    |calcit-lang/skir |0.0.28
     |calcit-lang/lilac |0.5.9

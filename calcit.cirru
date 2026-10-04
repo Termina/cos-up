@@ -3,7 +3,7 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |app
   :entries $ {} $ :default
-    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!)
+    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :node)
       :feature-policy $ {}
       :modules $ [] |skir/ |lilac/
       :type-slots $ {}
@@ -83,7 +83,7 @@
             :features $ #{} :js-ffi
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
-            skir/create-server! on-request! $ %some $ {}
+            skir/create-server! on-request! $ Option :some $ {}
               :port $ js/parseInt $ option:unwrap-or (get-env |PORT) |4000
             , &unit
           :examples $ []
@@ -93,10 +93,10 @@
         'on-request! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-request! (req-data res)
             let
-                request $ unsafe-coerce req-data Map
-                method $ option:unwrap-or (get request :method) :get
-                request-path $ option:unwrap-or (get request :path) |
-              println $ format-cirru-edn $ -> request (dissoc :original-request) (dissoc :headers)
+                request req-data
+                method $ :method request
+                request-path $ :path request
+              println method request-path
               if
                 and (= :post method) (= |/token request-path)
                 let
@@ -105,7 +105,9 @@
                         path/join (fileURLToPath js/import.meta.url) |../../secrets.cirru
                         , |utf8
                       , Map
-                    original-request $ option:unwrap-or (get request :original-request) nil
+                    original-request $ unsafe-coerce
+                      .unwrap $ :original-request request
+                      , app.http/IncomingRequestHost
                   fn (cb)
                     extract-body original-request $ fn (body)
                       let
@@ -114,7 +116,6 @@
                           pass $ option:unwrap-or (get payload :pass) |
                           expected-user $ option:unwrap-or (get secrets :user) |
                           expected-pass $ option:unwrap-or (get secrets :pass-md5) |
-                        println |BODY payload
                         if
                           and (= user expected-user) (= pass expected-pass)
                           handle-token

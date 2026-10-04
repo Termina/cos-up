@@ -30,6 +30,7 @@ jobs:
 
     - uses: calcit-lang/setup-calcit@704b3f5cd6f9ce3bd1e0c926dbdd1d181adb8180 # v1.4.0
       with:
+        deps-file: deps.cirru
         tools: calcit,caps
 
     - name: Resolve immutable dependencies
@@ -44,8 +45,8 @@ jobs:
         set -euo pipefail
         calcit calcit.cirru edit format
         git diff --exit-code -- calcit.cirru
-        calcit calcit.cirru --check-only
-        calcit calcit.cirru analyze dynamic-methods
+        calcit calcit.cirru --check-only --strict-types --warn-dyn-method
+        calcit calcit.cirru analyze check-public --ns app.main --ns app.http
         calcit calcit.cirru analyze deprecated --summary-only
         calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
 

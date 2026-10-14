@@ -25,11 +25,12 @@ jobs:
     - name: Enable Corepack
       run: |
         corepack enable
-        corepack prepare yarn@4.12.0 --activate
+        corepack prepare yarn@4.18.0 --activate
         yarn --version
 
-    - uses: calcit-lang/setup-calcit@704b3f5cd6f9ce3bd1e0c926dbdd1d181adb8180 # v1.4.0
+    - uses: calcit-lang/setup-calcit@ca701be5a471759e442aa053cd100720bbe1f09f # v1.5.0
       with:
+        deps-file: deps.cirru
         tools: calcit,caps
 
     - name: Resolve immutable dependencies
@@ -45,8 +46,9 @@ jobs:
         calcit calcit.cirru edit format
         git diff --exit-code -- calcit.cirru
         calcit calcit.cirru --check-only
-        calcit calcit.cirru analyze dynamic-methods
-        calcit calcit.cirru analyze deprecated --summary-only
+        calcit calcit.cirru analyze weak-types --only dynamic-method --summary-only --format json | jq -e '.data.summary.findings == 0'
+        calcit calcit.cirru --check-only --ns app.main --ns app.http
+        calcit calcit.cirru analyze weak-types --only deprecated-call --summary-only
         calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
 
     - name: Build server bundle
@@ -55,7 +57,7 @@ jobs:
         calcit calcit.cirru js
         node --check js-out/app.main.mjs
         mkdir -p dist-server
-        cp -r package.json main.mjs js-out yarn.lock dist-server/
+        cp -r package.json main.mjs js-out yarn.lock .yarnrc.yml dist-server/
 
     - name: Upload server script
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -67,7 +69,7 @@ jobs:
         flags: '-avzr --progress'
         options: ''
         ssh_options: ''
-        src: 'dist-server/*'
+        src: 'dist-server/'
         dest: 'rsync-user@tiye.me:/servers/cos-up/'
 
     - name: Display deployment status

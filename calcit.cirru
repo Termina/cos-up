@@ -13,18 +13,17 @@
         %{} 'CodeEntry (:doc |)
           :code $ quote $ defn extract-body (req cb)
             collect-body-str req $ Option :some $ fn (text)
-              hint-fn $ {}
-                :args $ [] 'String
-                :return 'Unit
-              cb $ try-parse-cirru-edn-as text $ :: 'Map 'Tag 'String
+              hint-fn $ Fn String $ -> Unit
+              cb $ try-parse-cirru-edn-as text $ Map Tag String
               , &unit
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'js-ffi.node/NodeRequestHost $ :: 'Fn
-              {} (:return 'Unit)
-                :args $ [] $ :: 'Result (:: 'Map 'Tag 'String) 'String
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn js-ffi.node/NodeRequestHost
+            Fn
+              Result (Map Tag String) String
+              -> Unit
+            -> Unit
+            :features :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.http
           :require $ skir.util :refer $ collect-body-str
@@ -32,16 +31,28 @@
       :defs $ {}
         'CosClientHost $ %{} 'CodeEntry (:doc |)
           :code $ quote $ deftrait CosClientHost
-            .get-object-url! $ :: 'Fn $ {}
-              :args $ [] 'app.main/CosClientHost 'JsObject $ :: 'Fn
-                {}
-                  :args $ [] 'Dynamic 'Dynamic
-                  :return 'Unit
-              :return 'Dynamic
+            .get-object-url! $ Fn app.main/CosClientHost JsObject
+              Fn (JsNullish JsObject) (JsNullish JsObject) (-> Unit)
+              -> String
           :examples $ []
           :ffi $ {} (:backend :js) (:kind :external-object) (:target :node)
             :names $ {} $ :get-object-url! |getObjectUrl
-          :schema $ :: 'Trait
+          :schema $ quote Trait
+        'HandlerReply $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defunion HandlerReply (Map Tag ReplyField)
+            Fn
+              Fn (Map Tag ReplyField) (-> Unit)
+              -> Unit
+          :examples $ []
+          :schema $ quote UnionDef
+        'ReplyField $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defunion ReplyField Number String (Map ReplyKey String)
+          :examples $ []
+          :schema $ quote UnionDef
+        'ReplyKey $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defunion ReplyKey Tag String
+          :examples $ []
+          :schema $ quote UnionDef
         'handle-token $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn handle-token (bucket app-id secret file-key cb)
             let
@@ -50,11 +61,11 @@
                   , app.main/CosClientHost
               cos-obj .get-object-url!
                 js-object (:Bucket bucket) (:Region |ap-shanghai)
-                  :Key $ str |cos-up/ $ or file-key |demo0
+                  :Key $ str |cos-up/ file-key
                   :Method |PUT
                   :Sign true
-                fn (err data)
-                  if (non-nil? err)
+                fn (err ? data)
+                  if (js-present? err)
                     cb $ {} (:code 400)
                       :body $ {} $ :message (str err)
                     let
@@ -72,20 +83,17 @@
                   , &unit
               , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'String 'String 'String 'String $ :: 'Fn
-              {} (:return 'Unit)
-                :args $ [] 'Dynamic
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn String String String String
+            Fn (Map Tag ReplyField) (-> Unit)
+            -> Unit
+            :features :js-ffi
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             skir/create-server! on-request! $ Option :some $ {}
               :port $ js/parseInt $ option:unwrap-or (get-env |PORT) |4000
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
         'on-request! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-request! (req-data res)
             let
@@ -100,19 +108,16 @@
                       contract/expect-string |secrets-file $ fs/readFileSync
                         path/join (fileURLToPath js/import.meta.url) |../../secrets.cirru
                         , |utf8
-                      :: 'Map 'Tag 'String
+                      Map Tag String
                     original-request $ .unwrap $ :original-request request
                   fn (cb)
-                    hint-fn $ {}
-                      :args $ [] $ :: 'Fn
-                        {}
-                          :args $ [] 'Dynamic
-                          :return 'Unit
-                      :return 'Unit
+                    hint-fn $ Fn
+                      Fn (Map Tag ReplyField) (-> Unit)
+                      -> Unit
                     extract-body original-request $ fn (parsed)
-                      hint-fn $ {}
-                        :args $ [] $ :: 'Result (:: 'Map 'Tag 'String) 'String
-                        :return 'Unit
+                      hint-fn $ Fn
+                        Result (Map Tag String) String
+                        -> Unit
                       match parsed
                         (:ok payload)
                           let
@@ -143,15 +148,11 @@
                     :headers $ {}
                     :body $ {} $ :message "|only token is impelemented"
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'skir.schema/Request 'js-ffi.node/NodeServerResponseHost
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn skir.schema/Request js-ffi.node/NodeServerResponseHost (-> HandlerReply) (:features :js-ffi)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () (skir/reset-req-handler! on-request!) (println |Reloaded.) &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (|cos-nodejs-sdk-v5 :default COS) (skir.core :as skir)

@@ -56,7 +56,7 @@
         'handle-token $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn handle-token (bucket app-id secret file-key cb)
             let
-                cos-obj $ unsafe-coerce
+                cos-obj $ js-cast
                   new COS $ js-object (:SecretId app-id) (:SecretKey secret)
                   , app.main/CosClientHost
               cos-obj .get-object-url!

@@ -6,7 +6,7 @@ COS upload
 
 ### 使用者影响与开发
 
-使用正式 Calcit/procs 0.38.0、Skir 0.0.40、Node 24 和 Yarn 4.18.0。
+使用正式 Calcit/procs 0.40.0、Skir 0.0.40、Node 24 和 Yarn 4.18.0。
 应用版本保持 0.0.9，不额外发模块 release。移除未被源码使用的 Lilac 依赖和 entry，
 不混用旧 alpha、main/hash 依赖。应用继续接收 Skir 的真实 Request。
 
@@ -31,7 +31,7 @@ calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
 ```
 
 应用用具名联合类型描述 Skir 的同步 Map 和异步回调响应。COS SDK 失败时可以只传错误参数，成功时仍校验返回的 URL。
-原质量门禁继续生效，保留一处 SDK 构造器宿主转换。
+SDK 构造器返回值通过受检 JS 接口验证 `getObjectUrl`。原质量门禁收紧为零债务。
 
 这是后端签名服务，不添加前端 COS/CDN 上传。原有服务器部署路径
 `/servers/cos-up/` 保持不变。原 Actions 只 rsync 文件，不会远程安装依赖；

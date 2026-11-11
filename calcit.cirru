@@ -12,7 +12,7 @@
       :defs $ {} $ 'extract-body
         %{} 'CodeEntry (:doc |)
           :code $ quote $ defn extract-body (req cb)
-            collect-body-str req $ Option :some $ fn (text)
+            collect-body-str req $ Some $ fn (text)
               hint-fn $ Fn String $ -> Unit
               cb $ try-parse-cirru-edn-as text $ Map Tag String
               , &unit
@@ -89,8 +89,8 @@
             :features :js-ffi
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
-            skir/create-server! on-request! $ Option :some $ {}
-              :port $ js/parseInt $ option:unwrap-or (get-env |PORT) |4000
+            skir/create-server! on-request! $ Some $ {}
+              :port $ js/parseInt $ .unwrap-or (get-env |PORT) |4000
             , &unit
           :examples $ []
           :schema $ quote $ Fn (-> Unit) (:features :js-ffi)

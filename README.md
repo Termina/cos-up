@@ -6,7 +6,7 @@ COS upload
 
 ### 使用者影响与开发
 
-使用正式 Calcit/procs 0.40.0、Skir 0.0.40、Node 24 和 Yarn 4.18.0。
+使用正式 Calcit/procs 0.41.0、Skir 0.0.40、Node 24 和 Yarn 4.18.0。
 应用版本保持 0.0.9，不额外发模块 release。移除未被源码使用的 Lilac 依赖和 entry，
 不混用旧 alpha、main/hash 依赖。应用继续接收 Skir 的真实 Request。
 
@@ -27,7 +27,7 @@ calcit calcit.cirru fix --workflow strict --verify
 calcit calcit.cirru analyze weak-types --only dynamic-method --summary-only --format json | jq -e '.data.summary.findings == 0'
 calcit calcit.cirru --check-only --ns app.main --ns app.http
 calcit calcit.cirru analyze weak-types --only deprecated-call --summary-only
-calcit calcit.cirru analyze quality --baseline config/calcit-quality.cirru
+bash scripts/check-types.sh # requires jq
 ```
 
 应用用具名联合类型描述 Skir 的同步 Map 和异步回调响应。COS SDK 失败时可以只传错误参数，成功时仍校验返回的 URL。

@@ -93,7 +93,7 @@
               :port $ js/parseInt $ .unwrap-or (get-env |PORT) |4000
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
         'on-request! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-request! (req-data res)
             let
@@ -148,11 +148,11 @@
                     :headers $ {}
                     :body $ {} $ :message "|only token is impelemented"
           :examples $ []
-          :schema $ quote $ Fn skir.schema/Request js-ffi.node/NodeServerResponseHost (-> HandlerReply) (:features :js-ffi)
+          :schema $ quote $ Fn skir.schema/Request js-ffi.node/NodeServerResponseHost (-> HandlerReply) (:features :io :js-ffi)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () (skir/reset-req-handler! on-request!) (println |Reloaded.) &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (|cos-nodejs-sdk-v5 :default COS) (skir.core :as skir)

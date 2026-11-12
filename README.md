@@ -6,7 +6,7 @@ COS upload
 
 ### 使用者影响与开发
 
-使用正式 Calcit/procs 0.41.1、Skir 0.0.40、Node 24 和 Yarn 4.18.0。
+使用正式 Calcit/procs 0.42.1、Skir 0.0.40、Node 24 和 Yarn 4.18.0。
 应用版本保持 0.0.9，不额外发模块 release。移除未被源码使用的 Lilac 依赖和 entry，
 不混用旧 alpha、main/hash 依赖。应用继续接收 Skir 的真实 Request。
 

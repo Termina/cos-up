@@ -93,7 +93,7 @@
               :port $ js/parseInt $ .unwrap-or (get-env |PORT) |4000
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi :state)
         'on-request! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn on-request! (req-data res)
             let
@@ -152,7 +152,7 @@
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () (skir/reset-req-handler! on-request!) (println |Reloaded.) &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi :state)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (|cos-nodejs-sdk-v5 :default COS) (skir.core :as skir)
